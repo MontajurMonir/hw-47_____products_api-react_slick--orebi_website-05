@@ -13,3 +13,4 @@ const PrevArrow = (props) => {
 };
 
 export default PrevArrow;
+ 

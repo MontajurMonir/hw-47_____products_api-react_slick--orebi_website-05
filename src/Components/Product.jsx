@@ -17,7 +17,7 @@ const Product = ({
   productColorName,
 }) => {
   return (
-    <div className=" mx-4 bg-gray-100">
+    <div className="mx-4 bg-gray-100 ">
       <div className="relative group">
         <Image imgSrc={productImg} className={`w-full`} />
         <Badge

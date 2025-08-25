@@ -1,17 +1,40 @@
-import React from "react";
 import Container from "../Container";
-import Flex from "../Flex";
+
 import Product from "../Product";
 import { Link } from "react-router-dom";
 
-import productOne from "/src/assets/productOne.png";
-import productTwo from "/src/assets/productTwo.png";
-import productThree from "/src/assets/productThree.png";
-import productFour from "/src/assets/productFour.png";
 import Image from "../Image";
 import ShopNow from "/src/assets/ShopNow.png";
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import NextArrow from "../NextArrow";
+import PrevArrow from "../PrevArrow";
+
 const BestSelling = () => {
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 2,
+        nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+  };
+
+  // ================
+  const [allData, setAllData] = useState([]);
+  useEffect(() => {
+    async function productData() {
+      const apiData = await axios.get("https://dummyjson.com/products");
+      setAllData(apiData.data.products);
+    }
+    productData();
+  }, []);
+
   return (
     <>
       <div className="pt-[100px]">
@@ -25,41 +48,26 @@ const BestSelling = () => {
             </Link>
           </div>
 
-          <div className="pt-10">
-            <Flex className={" gap-x-7"}>
-              <Product
-                badgeText={"10%"}
-                productImg={productOne}
-                productText={"Basic Crew Neck Tee"}
-                productPrice={"$44.00"}
-                productColorName={"black"}
-              />
-              <Product
-                badgeText={"New"}
-                productImg={productTwo}
-                productText={"Basic Crew Neck Tee"}
-                productPrice={"$44.00"}
-                productColorName={"gray"}
-              />
-              <Product
-                badgeText={"20%"}
-                productImg={productThree}
-                productText={"Basic Crew Neck Tee"}
-                productPrice={"$44.00"}
-                productColorName={"black"}
-              />
-              <Product
-                badgeText={"New"}
-                productImg={productFour}
-                productText={"Basic Crew Neck Tee"}
-                productPrice={"$44.00"}
-                productColorName={"white"}
-              />
-            </Flex>
+          <div className="pt-10 -mx-4">
+            <Slider {...settings}>
+              {
+              allData.map((item) => (
+                <div>
+                  <Product
+                    badgeText={`${item.discountPercentage}%`}
+                    productImg={item.thumbnail}
+                    productText={item.title}
+                    productPrice={`$${item.price}`}
+                  />
+                </div>
+              ))
+              }
+            </Slider>
           </div>
+
           <div className="py-[80px]">
             <Link to={"/shop"}>
-            <Image imgSrc={ShopNow} />
+              <Image imgSrc={ShopNow} />
             </Link>
           </div>
         </Container>

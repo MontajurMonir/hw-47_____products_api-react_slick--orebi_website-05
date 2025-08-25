@@ -12,4 +12,4 @@ const NextArrow = (props) => {
   );
 };
 
-export default NextArrow;
+export default NextArrow;  

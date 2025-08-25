@@ -33,11 +33,11 @@ const [allData,setAllData] = useState([])
 
 useEffect(()=>{
   async function productData() {
-    const apiData =await axios.get('/public/json/response.json') 
+    const apiData =await axios.get('https://dummyjson.com/products') 
     setAllData(apiData.data.products)
     
   }
-  productData()
+  productData() 
 
 },[])
 
@@ -52,16 +52,16 @@ useEffect(()=>{
             </Link>
           </div>
 
-          <div className="pt-10">
+          <div className="pt-10 -mx-4">
             <Slider {...settings}>
                 {
                   allData.map(item=>(
                     
-                    <div >
+                    <div>
                     <Product
                       badgeText={`${item.discountPercentage}%`}
                       productImg={item.thumbnail}
-                      productText={item.title}
+                      productText={item.title} 
                       productPrice={`$${item.price}`}
                       
                       />
