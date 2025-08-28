@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Container from "../Container";
 import Flex from "../Flex";
 import Image from "../Image";
@@ -9,8 +9,34 @@ import { IoSearchOutline } from "react-icons/io5";
 import { FaUser, FaCaretDown, FaShoppingCart } from "react-icons/fa";
 
 const Header = () => {
+  const [showCategory, setCategory] = useState(false);
+  const dropdownRef = useRef(null)
+
+
+
+const handleCategory = () => {
+  // setCategory(true) // Only show, no toggle back
+
+  // setCategory(!showCategory)
+  setCategory(prev => !prev)
+
+}
+
+const handleClickOutside =(event)=>{
+  if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    setCategory(false)
+    
+  }
+}
+useEffect(()=>{
+  document,addEventListener("mousedown",handleClickOutside);
+return()=>{
+  document.removeEventListener("mousedown",handleClickOutside)
+}
+},[])
   return (
     <>
+    <div >
       <div className="bg-gray-300 py-5">
         <Container>
           <Flex>
@@ -58,9 +84,39 @@ const Header = () => {
       <div className="bg-[#F5F5F3] py-3">
         <Container>
           <Flex className="justify-between">
-            <div className="flex items-center gap-x-1.5 text-[#262626] text-[14px]">
-              <HiOutlineBars2 />
-              <h3>Shop by Category</h3>
+            <div className="relative">
+              {/* onClick={()=> setCategory(!showCategory)} */}
+              <div ref={dropdownRef} onClick={handleCategory} className="flex items-center gap-x-1.5 text-[#262626] text-[14px]">
+                <HiOutlineBars2 />
+                <h3>Shop by Category</h3>
+                  
+              </div>
+
+              {showCategory && (
+                  <ul className="absolute top-6 left-0 bg-gray-400 text-white py-2 grid gap-y-2">
+                  <Link to={""}>
+                    <li className="px-5 text-[14px]  hover:text-[#262626] hover:font-bold cursor-pointer">
+                      beauty
+                    </li>
+                  </Link>
+                  <Link to={""}>
+                    <li className="px-5 text-[14px]  hover:text-[#262626] hover:font-bold cursor-pointer">
+                      groceries
+                    </li>
+                  </Link>
+                  <Link to={""}>
+                    <li className="px-5 text-[14px]  hover:text-[#262626] hover:font-bold cursor-pointer">
+                      fragrances
+                    </li>
+                  </Link>
+                  <Link to={""}>
+                    <li className="px-5 text-[14px]  hover:text-[#262626] hover:font-bold cursor-pointer">
+                      furniture
+                    </li>
+                  </Link>
+                </ul>
+                )
+              }
             </div>
             <div className="relative">
               <input
@@ -82,6 +138,8 @@ const Header = () => {
           </Flex>
         </Container>
       </div>
+
+    </div>
     </>
   );
 };
